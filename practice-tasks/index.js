@@ -1,12 +1,16 @@
 const express = require('express')
 const session = require('express-session')
 const jwt = require('jsonwebtoken')
+const routes = require('./router/friends.js')
+
 
 const app = express();
 const PORT = 3000;
 
 app.use(session({ secret: 'MYsecErTSessUib', resave: true, saveUninitialized: true }))
 app.use(express.json())
+
+let users = [];
 
 //checking users array to see if user exist 
 const doesExist = (username) => {
@@ -97,4 +101,4 @@ app.use("/friends", (req, res, next) => {
 
 app.use("/friends", routes)
 
-app.listen(PORT, console.log("Server is running"))
+app.listen(PORT, () => console.log("Server is running"))
