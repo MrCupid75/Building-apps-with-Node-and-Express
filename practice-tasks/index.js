@@ -80,13 +80,13 @@ app.post("/login", (req, res) => {
     }
 })
 
-app.use("/friends", (req, res, next) => {
+app.use("/friends", function auth(req, res, next) {
 
     if (req.session.authorization) {
 
-        let token = req.session.authorization["acesstoken"]
+        let token = req.session.authorization.accesstoken;
 
-        jwt.verify(token, 'access', (err, user) => {
+        jwt.verify(token, "access", (err, user) => {
             if (!err) {
                 req.user = user
                 next()

@@ -8,17 +8,16 @@ let friends = {
     "peterjones@gamil.com": { "firstName": "Peter", "lastName": "Jones", "DOB": "21-03-1989" }
 };
 
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
     res.send(JSON.stringify(friends, null, 4))
 })
 
-router.get("/:email", (req, res) => {
+router.get("/:email", async (req, res) => {
     const friendEmail = req.params.email
-
     res.send(JSON.stringify(friends[friendEmail], null, 4))
 })
 
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
     let newUserEmail = req.body.email;
 
     if (newUserEmail) {
@@ -33,10 +32,10 @@ router.post("/", (req, res) => {
     res.send(`User ${req.body.firstName} has been added`)
 })
 
-//Update
-router.put("/:email", (res, req) => {
+// Update
+router.put("/:email", async (req, res) => {
     const email = req.params.email;
-    let friend = friends[email]
+    let friend = friends[email];
 
     if (friend) {
         if (req.body.firstName) {
@@ -55,7 +54,7 @@ router.put("/:email", (res, req) => {
     }
 })
 
-router.delete("/:email", (req, res) => {
+router.delete("/:email", async (req, res) => {
     const emailDelete = req.body.email;
 
     if (emailDelete) {
