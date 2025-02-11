@@ -1,20 +1,20 @@
 {
-  "name": "crud-basics",
+  "name": "practice-tasks",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node index_auth.js",
-    "dev": "nodemon index_auth.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "crud-basics": "file:",
     "express": "^4.21.2",
     "express-session": "^1.18.1",
     "jsonwebtoken": "^9.0.2",
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.9",
+    "practice-tasks": "file:"
   }
 }
