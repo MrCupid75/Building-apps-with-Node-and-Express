@@ -64,7 +64,7 @@ app.post("/login", (req, res) => {
     }
 
     //check if user has registered
-    if (!authenticatedUser(username, password)) {
+    if (authenticatedUser(username, password)) {
         let accesstoken = jwt.sign(
             { data: password },
             'access',
