@@ -2,13 +2,9 @@ const express = require('express');
 const session = require('express-session');
 const jwt = require('jsonwebtoken')
 const regUser = express.Router();
-
-const app = express()
+const books = require('./bookdb.js');
 
 const users = []
-
-app.use(session({ secret: 'mySecret', resave: true, saveUninitialized: true }))
-app.use(express.json())
 
 const doExist = (username) => {
     const alreadyExistUser = users.filter((user) => user.username === username);
@@ -29,22 +25,6 @@ const validateUser = (username, password) => {
 
 }
 
-//Register Users
-regUser.post("/register", (req, res) => {
-    const username = req.body.username;
-    const password = req.body.password;
-
-    if (!doExist(username)) {
-        users.push({
-            'username': username,
-            'password': password
-        })
-        return res.status(200).json({ message: "User Registered" })
-    } else {
-        return res.status(403).json({ message: "User already exist" })
-    }
-})
-
 regUser.post("/login", (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
@@ -62,7 +42,38 @@ regUser.post("/login", (req, res) => {
         )
 
         req.session.authorization = { accessToken }
+        return res.status(200).json({ message: "User successfully logged in" })
     } else {
-        res.status(403).json({ message: "User not registered!" })
+        return res.status(403).json({ message: "User not registered!" })
     }
 })
+
+// Add a book review
+regUser.put("/auth/review/:isbn", (req, res) => {
+    const isbn = req.params.isbn;
+    const review = req.body.review;
+
+    if (books[isbn]) {
+        books[isbn].reviews = review;
+        return res.status(200).json({ message: "Review added successfully" });
+    } else {
+        return res.status(404).json({ message: "Book not found" });
+    }
+});
+
+//delete a book review
+regUser.delete("/auth/review/:isbn", (req, res) => {
+    const isbn = req.params.isbn;
+
+    if (books[isbn]) {
+        delete books[isbn].reviews;
+        return res.status(200).json({ message: "Review deleted successfully" });
+    } else {
+        return res.status(404).json({ message: "Book not found" });
+    }
+});
+
+
+module.exports.authenticated = regUser;
+module.exports.doExist = doExist;
+module.exports.users = users;
