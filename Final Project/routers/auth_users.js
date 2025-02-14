@@ -52,10 +52,12 @@ regUser.post("/login", (req, res) => {
 regUser.put("/auth/review/:isbn", (req, res) => {
     const isbn = req.params.isbn;
     const review = req.body.review;
+    const user = req.body.user;
 
     if (books[isbn]) {
-        books[isbn].reviews = review;
-        return res.status(200).json({ message: "Review added successfully" });
+
+        books[isbn].reviews[user] = review;
+        return res.status(200).json({ message: "Review added successfully", book: books[isbn] });
     } else {
         return res.status(404).json({ message: "Book not found" });
     }
@@ -66,8 +68,8 @@ regUser.delete("/auth/review/:isbn", (req, res) => {
     const isbn = req.params.isbn;
 
     if (books[isbn]) {
-        delete books[isbn].reviews;
-        return res.status(200).json({ message: "Review deleted successfully" });
+        books[isbn].reviews = {};
+        return res.status(200).json({ message: "Review deleted successfully", book: books[isbn] });
     } else {
         return res.status(404).json({ message: "Book not found" });
     }
